@@ -6,8 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../vars/vars.css">
   <link rel="stylesheet" href="../styles/getinfo_result.css">
-  
-  
   <style>
    a,
    button,
@@ -35,6 +33,30 @@
        padding: 0;
    }
    </style>
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const accordionTitles = document.querySelectorAll('.accordion-title');
+
+      accordionTitles.forEach(title => {
+        title.addEventListener('click', function () {
+          const accordionContainer = this.parentElement;
+          const accordionContent = accordionContainer.querySelector('.accodion-content');
+          const accordionButton = this.querySelector('.btn-accodion');
+
+          // 아코디언이 열려 있으면 닫고, 닫혀 있으면 열기
+          if (accordionContainer.classList.contains('active')) {
+            accordionContainer.classList.remove('active');
+            accordionContent.style.display = 'none';
+            accordionButton.src = '../vectors/btn-accodion-down.svg'; // 닫기 아이콘으로 변경
+          } else {
+            accordionContainer.classList.add('active');
+            accordionContent.style.display = 'flex';
+            accordionButton.src = '../vectors/btn-accodion-up.svg'; // 열기 아이콘으로 변경
+          }
+        });
+      });
+    });
+  </script>
   <title>IPS Rule Advisor</title>
 </head>
 <body>
@@ -141,11 +163,11 @@
         </div>
         <div class="card__subtitle">메트릭요약</div>
         <div class="card__text">{{ metrics_summary | default('정보 없음') }}</div>
-        <!--
+        
         <div class="accodion-container">
           <div class="accordion-title">
             <div class="text-accodion-title">악용 가능성 매트릭</div>
-            <img class="btn-accodion" src="../vectors/btn-accodion-up.svg" />
+            <img class="btn-accodion" src="../vectors/btn-accodion-down.svg" />
           </div>
           <div class="accodion-content">
             <div class="textbox-metric">
@@ -198,7 +220,7 @@
         <div class="accodion-container">
           <div class="accordion-title">
             <div class="text-accodion-title">영향 매트릭</div>
-            <img class="btn-accodion" src="../vectors/btn-accodion-up.svg" />
+            <img class="btn-accodion" src="../vectors/btn-accodion-down.svg" />
           </div>
           <div class="accodion-content">
             <div class="textbox-metric">
@@ -249,7 +271,7 @@
           </div>
         </div>
       </div>
-      -->
+      
       <div class="card-rule">
         <div class="card__title">연관 IPS Rule</div>
         <div class="line-seperate"></div>
@@ -267,7 +289,7 @@
             {{ type | default('정보 없음') }}
           </div>
         </div>
-        <!--
+        
         <div class="card__row">
           <div class="card__subtitle">영향받는 제품</div>
           <div class="dropdown-field">
@@ -285,7 +307,7 @@
           </div>
         </div>
       </div>
-    -->
+    
       <div class="card-gpt">
         <div class="card__title">ChatGPT 프롬프트</div>
         <div class="chat-inputbox">
@@ -356,7 +378,7 @@
           {% endif %}
         </div>
       </div>
-      <!--
+      
       <div class="card-ref">
         <div class="card__title">참고자료</div>
         <div class="line-seperate"></div>
@@ -388,7 +410,7 @@
           </div>
         </div>
       </div>
-    -->
+    
       <div class="main-row">
         <div class="button-group">
           <button class="button-neutral text-button--neutral">뒤로</button>

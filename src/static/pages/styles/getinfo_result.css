@@ -477,7 +477,7 @@
   overflow: visible;
 }
 .accodion-content {
-  display: flex;
+  display: none; /*flex*/
   flex-direction: column;
   gap: 0.5rem;
   align-items: flex-start;

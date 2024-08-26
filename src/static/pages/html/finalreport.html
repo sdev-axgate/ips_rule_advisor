@@ -6,8 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../vars/vars.css">
   <link rel="stylesheet" href="../styles/finalreport.css">
-  
-  
   <style>
    a,
    button,
@@ -35,6 +33,30 @@
        padding: 0;
    }
    </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const accordionTitles = document.querySelectorAll('.accordion-title');
+
+      accordionTitles.forEach(title => {
+        title.addEventListener('click', function () {
+          const accordionContainer = this.parentElement;
+          const accordionContent = accordionContainer.querySelector('.accodion-content');
+          const accordionButton = this.querySelector('.btn-accodion');
+
+          // 아코디언이 열려 있으면 닫고, 닫혀 있으면 열기
+          if (accordionContainer.classList.contains('active')) {
+            accordionContainer.classList.remove('active');
+            accordionContent.style.display = 'none';
+            accordionButton.src = '../vectors/btn-accodion-down.svg'; // 닫기 아이콘으로 변경
+          } else {
+            accordionContainer.classList.add('active');
+            accordionContent.style.display = 'flex';
+            accordionButton.src = '../vectors/btn-accodion-up.svg'; // 열기 아이콘으로 변경
+          }
+        });
+      });
+    });
+  </script>
   <title>IPS Rule Advisor</title>
 </head>
 <body>
@@ -75,7 +97,7 @@
         <div class="accodion-container">
           <div class="accordion-title">
             <div class="text-accodion-title">CVE 정보 수집 결과 자세히 보기</div>
-            <img class="btn-accodion" src="../vectors/btn-accodion-up.svg" />
+            <img class="btn-accodion" src="../vectors/btn-accodion-down.svg" />
           </div>
           <div class="accodion-content">
             <div class="text-accodion-content-subtitle">영향받는 제품</div>
@@ -167,7 +189,7 @@
         <div class="accodion-container">
           <div class="accordion-title">
             <div class="text-accodion-title">IPS 룰 테스트 결과 자세히 보기</div>
-            <img class="btn-accodion" src="../vectors/btn-accodion-up.svg" />
+            <img class="btn-accodion" src="../vectors/btn-accodion-down.svg" />
           </div>
           <div class="accodion-content">
             <div class="text-accodion-content-subtitle">테스트 환경</div>
