@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../static/css/vars.css">
-  <link rel="stylesheet" href="../static/css/getinfo.css">
-  
+  <link rel="stylesheet" href="../vars/vars.css">
+  <link rel="stylesheet" href="../styles/getinfo_main.css">
   <style>
    a,
    button,
@@ -41,8 +40,8 @@
     <header class="header">
       <div class="header-logo">
         <div class="logo">
-          <img class="hdd-fill" src="../static/pages/vectors/logo-hdd-fill0.svg" />
-          <img class="shield-plus" src="../static/pages/vectors/logo-shield-plus0.svg" />
+          <img class="hdd-fill" src="../vectors/logo-hdd-fill0.svg" />
+          <img class="shield-plus" src="../vectors/logo-shield-plus0.svg" />
         </div>
       </div>
       <div class="header-nav">
@@ -55,15 +54,15 @@
         <button class="auth__button-login text-button--primary">로그인</button>
       </div>
     </header>
-    <form class="content__search-form" id="cve-form" action="/getinfo" method="get">
+    <form class="content__search-form">
       <div class="search-form__title-group">
         <div class="search-form__title">CVE 정보 검색</div>
         <div class="search-form__subtitle">CVE 코드, 키워드 등...</div>
       </div>
       <div class="search-form__input-group">
-          <input class="search-form__input" id="cve_code" name="cve_code" type="text"
-            placeholder="CVE-2000-12345, log4j, etc..." required />
-        <button class="button-search text-button--primary" type="submit">검색</button>
+          <input class="search-form__input"  id="" name="" type="text"
+            placeholder="CVE-2000-12345, log4j, etc..."/>
+        <button class="button-search text-button--primary">검색</button>
       </div>
     </form>
   </div>
