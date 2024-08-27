@@ -36,9 +36,9 @@ async def classify_attack(description: str) -> str:
                 'model': 'gpt-4o-mini',
                 'messages': [
                     {"role": "system", "content": "You are a helpful assistant for classifying types of security attacks."},
-                    {"role": "user", "content": f"다음 설명을 읽고, 공격 유형 셋 중 어느 것에 해당하는지 선택해 주세요:\n\n설명: {description}\n\n{attack_types_str}\n\n위 공격 유형 중 설명에 가장 잘 맞는 것을 선택해 주세요."}
+                    {"role": "user", "content": f"다음 설명을 읽고, 아래 목록에서 가장 잘 맞는 공격 유형을 정확하게 하나만 선택해 주세요. 답변은 간단히 공격 유형의 이름만 적어 주세요.\n\n설명: {description}\n\n{attack_types_str}\n\n위 목록 중에서 해당하는 공격 유형의 이름을 하나만 적어 주세요."}
                 ],
-                'max_tokens': 200,
+                'max_tokens': 50,
                 'temperature': 0.2
             }
         )
@@ -89,10 +89,10 @@ async def chat_with_gpt(chat_message: str) -> dict:
         return {"reply": reply}
 
 
-async def summarize_vector(vector:str)->str:
+async def summarize_vector(vector: str) -> str:
     async with httpx.AsyncClient() as client:
         response = await client.post(
-             'https://api.openai.com/v1/chat/completions',
+            'https://api.openai.com/v1/chat/completions',
             headers={
                 'Authorization': f'Bearer {OPENAI_API_KEY}',
                 'Content-Type': 'application/json'
@@ -101,14 +101,20 @@ async def summarize_vector(vector:str)->str:
                 'model': 'gpt-4o-mini',
                 'messages': [
                     {"role": "system", "content": "You are a helpful assistant that explains CVSS vectors in Korean."},
-                    {"role": "user", "content": f"다음 CVSS 벡터를 한글로 요약해줘:\n\n{vector}"}
+                    {"role": "user", "content": f"다음 CVSS 벡터를 한글로 요약해줘:\n\n{vector}\n\n이 취약점이 네트워크를 통해 악용될 수 있는지, 공격 복잡성, 필요한 권한 수준, 사용자 상호작용의 필요성, 취약점이 다른 시스템에 영향을 미치는지 여부, 그리고 기밀성, 무결성, 가용성 측면에서 미치는 영향을 설명해줘. 설명은 아래와 같은 형식으로 작성해줘:\n\n"
+                    "이 취약점은 [공격 경로 설명].\n"
+                    "공격 복잡성은 [복잡성 설명]이며, [권한 설명] 필요합니다.\n"
+                    "[사용자 상호작용 필요 여부 설명].\n"
+                    "이 취약점은 [시스템 영향 설명].\n"
+                    "이 취약점은 [기밀성 영향 설명], [무결성 영향 설명], [가용성 영향 설명]을 초래할 수 있습니다."}
                 ],
-                'max_tokens': 200,
+                'max_tokens': 250,
                 'temperature': 0.3
             }
         )
         response_data = response.json()
         return response_data['choices'][0]['message']['content'].strip()
+
 
 
 
