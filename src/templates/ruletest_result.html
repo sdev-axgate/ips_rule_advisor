@@ -133,7 +133,7 @@
           <div class="table-row">
             <div class="table-grid-03">
               <div class="table__cell-03 text-cell" id="category">정상 패킷</div>
-              <div class="table__cell-03 text-cell" id="latency">Loading...</div>
+              <div class="table__cell-03 text-cell" id="normallatency">Loading...</div>
               <div class="table__cell-03 text-cell" id="cpu-usage">Loading...</div>
               <div class="table__cell-03 text-cell" id="memory-usage">Loading...</div>
             </div>
@@ -141,7 +141,7 @@
           <div class="table-row">
             <div class="table-grid-03">
               <div class="table__cell-03 text-cell" id="category">공격 패킷</div>
-              <div class="table__cell-03 text-cell" id="latency">Loading...</div>
+              <div class="table__cell-03 text-cell" id="attacklatency">Loading...</div>
               <div class="table__cell-03 text-cell" id="cpu-usage">Loading...</div>
               <div class="table__cell-03 text-cell" id="memory-usage">Loading...</div>
             </div>
@@ -181,6 +181,17 @@
 
     const data = await response.json();
 
+
+    const responseinfo = await fetch('/info', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ cve_code: data.cve }) // 필요한 testid를 여기에 넣음
+    });
+
+    const datainfo = await responseinfo.json();
+
     document.getElementById('rule-test-button').addEventListener('click', () => {
       const cveId = data.cve
       const envi = data.envi
@@ -194,8 +205,8 @@
     // 데이터를 HTML에 렌더링
     document.getElementById('cve-id').textContent = data.cve || 'N/A';
     document.getElementById('publish-date').textContent = `게시일: ${data.created_at || 'N/A'}`;
-    document.getElementById('vuln-type').textContent = `취약점 유형: ${data.vuln_type || 'N/A'}`;
-    document.getElementById('description').textContent = data.description || 'N/A';
+    document.getElementById('vuln-type').textContent = `취약점 유형: ${datainfo.type || 'N/A'}`;
+    document.getElementById('description').textContent = datainfo.info || 'N/A';
     document.getElementById('test-rule').textContent = data.rule || 'N/A';
     document.getElementById('test-environment').textContent = data.setting || 'N/A';
     document.getElementById('total-packets').textContent = data.total || 'N/A';
@@ -206,7 +217,8 @@
     document.getElementById('false-negative').textContent = data.normalrate || 'N/A';
     document.getElementById('true-positive').textContent = data.attacktrue || 'N/A';
     document.getElementById('true-negative').textContent = data.normaltrue || 'N/A';
-    document.getElementById('latency').textContent = data.attacklatency || 'N/A';
+    document.getElementById('normallatency').textContent = data.normallatency || 'N/A';
+    document.getElementById('attacklatency').textContent = data.attacklatency || 'N/A';
     document.getElementById('cpu-usage').textContent = data.cpu_usage || 'N/A';
     document.getElementById('memory-usage').textContent = data.memory_usage || 'N/A';
 

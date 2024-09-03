@@ -66,10 +66,7 @@ def sign_in_google(client: Client, response: Response):
     try:
         res = client.auth.sign_in_with_oauth(
         {
-            "provider": "google",
-            "options": {
-	            "redirect_to": "127.0.0.1:8000/callback"
-	        },
+            "provider": "google"
         }
     )
         return RedirectResponse(url=res.url)
