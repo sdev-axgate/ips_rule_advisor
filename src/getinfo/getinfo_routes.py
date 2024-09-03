@@ -28,3 +28,26 @@ async def get_info_page(request: Request, cve_code: str):
         "type": attack_type,
         "metrics_summary": metrics_summary
         })
+
+@router.get("/info")
+async def get_info_data(request: Request):
+
+    body = await request.json()  # Get JSON data from the request body
+    cve_code = body.get("cve_code")
+    info_result = await get_info(cve_code)
+
+    if '설명' in info_result.get('nvd', {}):
+        info_result['nvd']['설명'] = await translate_to_korean(info_result['nvd']['설명'])
+    
+    if '메트릭' in info_result.get('nvd',{}):
+        metrics_summary = await summarize_vector(info_result['nvd']['메트릭'])
+
+    attack_type = await classify_attack(info_result['nvd']['설명'])
+
+
+    return {
+        "request": request, 
+        "info": info_result,
+        "type": attack_type,
+        "metrics_summary": metrics_summary
+        }
