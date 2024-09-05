@@ -36,6 +36,7 @@
     }
   </style>
   <script>
+    // 아코디언 코드
     document.addEventListener('DOMContentLoaded', function () {
       const accordionTitles = document.querySelectorAll('.accordion-title');
 
@@ -66,14 +67,14 @@
   <div class="layout-wrapper">
     <header class="header">
       <div class="header-logo">
-        <div class="logo">
+        <div class="logo" id="logo">
           <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" />
           <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" />
         </div>
       </div>
       <div class="header-nav">
-        <a class="nav-item--active item-text" href="">정보수집</a>
-        <a class="nav-item item-text" href="../static/pages/html/ruletest.html">룰 테스트</a>
+        <a class="nav-item--active item-text" href="/">정보수집</a>
+        <a class="nav-item item-text" href="/ruletest">룰 테스트</a>
         <!--<a class="nav-item item-text" href="">마이페이지</a> -->
       </div>
       <div class="header-auth">
@@ -131,7 +132,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="card-cvss">
         <div class="card__title">CVSS</div>
         <div class="line-seperate"></div>
@@ -378,8 +379,9 @@
       </div>
       <div class="main-row">
         <div class="button-group">
-          <button class="button-neutral text-button--neutral">뒤로</button>
-          <button class="button-primary text-button--primary">룰 테스트</button>
+          <button class="button-neutral text-button--neutral" onclick="window.history.back()">뒤로</button>
+          <button class="button-primary text-button--primary">정보 수집 결과 저장</button>
+          <button class="button-primary text-button--primary" id="toRuletest">룰 테스트</button>
         </div>
       </div>
     </div>
@@ -387,6 +389,16 @@
 
 
   <script>
+    // 페이지 리다이렉트 코드
+    document.getElementById('logo').addEventListener('click', function () {
+      window.location.href = '/redirect-to-home';
+    });
+
+    document.getElementById('toRuletest').addEventListener('click', function () {
+      window.location.href = '/redirect-to-ruletest';
+    });
+
+    // ChatGPT 대화 메시지 박스 만드는 코드들
     const chatWrapper = document.getElementById('chat-wrapper');
     const chatForm = document.getElementById('chat-form');
     const promptInput = document.getElementById('user-input');
@@ -568,36 +580,37 @@
       chatWrapper.scrollTop = chatWrapper.scrollHeight;
     }
 
-// 폼 제출 이벤트 핸들러
-chatForm.addEventListener('submit', async function (event) {
-  event.preventDefault();
-  const userMessage = promptInput.value;
-  if (userMessage.trim() === '') return;
+    // 폼 제출 이벤트 핸들러
+    chatForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const userMessage = promptInput.value;
+      if (userMessage.trim() === '') return;
 
-  // cve_code 값을 HTML 요소에서 가져오기
-  const cveTitleElement = document.querySelector('.card__title');
-  const cveCode = cveTitleElement ? cveTitleElement.textContent.trim() : '';
+      // cve_code 값을 HTML 요소에서 가져오기
+      const cveTitleElement = document.querySelector('.card__title');
+      const cveCode = cveTitleElement ? cveTitleElement.textContent.trim() : '';
 
-  addMyMessage(userMessage);
-  promptInput.value = '';
+      addMyMessage(userMessage);
+      promptInput.value = '';
 
-  try {
-    const response = await fetch('/openai/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message: userMessage, cve_code: cveCode })
+      try {
+        const response = await fetch('/openai/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: userMessage, cve_code: cveCode })
+        });
+
+        const data = await response.json();
+        addGptMessage(data.reply);
+
+      } catch (error) {
+        console.error('Error:', error);
+        addMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
+      }
     });
-
-    const data = await response.json();
-    addGptMessage(data.reply);
-
-  } catch (error) {
-    console.error('Error:', error);
-    addMessage('chatGPT와 연결이 되지 않았습니다.', 'gpt');
-  }
-});
   </script>
 </body>
+
 </html>

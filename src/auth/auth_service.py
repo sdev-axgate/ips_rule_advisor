@@ -14,7 +14,7 @@ class Register(BaseModel):
     confirm_password: str
 
 
-def sign_up(client: Client, email: str, password: str):
+def sign_up(client: Client, email: str, password: str): # 회원가입?
     try:
         client.auth.sign_up({"email": email, "password": password})
         return {"status": "success"}
@@ -40,7 +40,7 @@ def read_root():
     """
     return HTMLResponse(content=html_content)
 
-def sign_in(request:Request,client: Client, email: str, password: str,response: Response):
+def sign_in(request:Request,client: Client, email: str, password: str,response: Response): # 로그인?
     try:
         res = client.auth.sign_in_with_password({"email": email, "password": password})
         print(res)

@@ -11,8 +11,11 @@ from json import JSONDecodeError
 router = APIRouter()
 templates = Jinja2Templates(directory="src/static/pages/html")
 
-
-@router.post("/sign_up")
+@router.get("/redirect-to-home")
+async def redirect_to_home():
+    return RedirectResponse(url="/")
+    
+@router.post("/sign_up") # 회원가입?
 async def sign_up_route(request: Request,client=Depends(get_supabase_client)):
     try:
         data = await request.json()
@@ -24,7 +27,7 @@ async def sign_up_route(request: Request,client=Depends(get_supabase_client)):
     result = sign_up(client=client, email=email, password=password)
     return result
 
-@router.post("/sign_in")
+@router.post("/sign_in") # 로그인?
 async def sign_in_route(
     response: Response,
     request: Request,

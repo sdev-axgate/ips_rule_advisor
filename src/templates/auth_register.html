@@ -44,7 +44,7 @@
   <div class="layout-wrapper">
     <header class="header">
       <div class="header-logo">
-        <div class="logo">
+        <div class="logo" id="logo">
           <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" />
           <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" />
         </div>
@@ -74,6 +74,11 @@
   </div>
 
   <script>
+    // 페이지 리다이렉트 코드
+    document.getElementById('logo').addEventListener('click', function () {
+      window.location.href = '/redirect-to-home';
+    });
+
     document.getElementById("registerForm").addEventListener("submit", async function (event) {
       event.preventDefault(); // 폼 기본 제출 막기
 

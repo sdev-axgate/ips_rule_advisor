@@ -6,7 +6,7 @@ from src.database.supabase_client import get_supabase_client
 from fastapi import APIRouter, Depends, Response, Request, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse
-
+from fastapi.responses import RedirectResponse
 
 router = APIRouter()
 templates = Jinja2Templates(directory="src/templates")
@@ -19,6 +19,9 @@ class cve(BaseModel):
     accuracy_test :str
     performance_test : str
 
+@router.get("/redirect-to-home")
+async def redirect_to_home():
+    return RedirectResponse(url="/")
 
 @router.post("/uploadfile/normal")
 async def upload_file(cve:str,request:Request,file: UploadFile = File(...),client=Depends(get_supabase_client)):

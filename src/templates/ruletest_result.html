@@ -44,15 +44,15 @@
   <div class="layout-wrapper">
     <header class="header">
       <div class="header-logo">
-        <div class="logo">
+        <div class="logo" id="logo">
           <img class="hdd-fill" src="../static/vectors/logo-hdd-fill0.svg" />
           <img class="shield-plus" src="../static/vectors/logo-shield-plus0.svg" />
         </div>
       </div>
       <div class="header-nav">
-        <a class="nav-item item-text" href= "/">정보수집</a>
-        <a class="nav-item--active item-text" href= "/ruletest">룰 테스트</a>
-        <a class="nav-item item-text" href="">마이페이지</a>
+        <a class="nav-item item-text" href="/">정보수집</a>
+        <a class="nav-item--active item-text" href="/ruletest">룰 테스트</a>
+        <!-- <a class="nav-item item-text" href="">마이페이지</a> -->
       </div>
       <div class="header-auth">
         <div class="auth-profile">
@@ -150,7 +150,7 @@
       </div>
       <div class="main-row">
         <div class="button-group">
-          <button class="button-start text-button--neutral" id = "rule-test-button">다시 테스트 하기</button>
+          <button class="button-start text-button--neutral" id="rule-test-button">다시 테스트 하기</button>
           <button class="button-end text-button--primary">최종 보고서 페이지로</button>
         </div>
       </div>
@@ -158,64 +158,67 @@
   </div>
 
   <script>
-    
-    document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    // URL에서 testid를 추출
-    const urlParams = new URLSearchParams(window.location.search);
-    const testid = urlParams.get('testid'); // URL 쿼리에서 testid 값을 가져옴
-
-    if (!testid) {
-      console.error('testid가 URL에 없습니다.');
-      return;
-    }
-
-    // 서버에서 데이터를 fetch
-    const response = await fetch('/rule/test/show', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ testid: testid }) // 필요한 testid를 여기에 넣음
+    // 페이지 리다이렉트 코드
+    document.getElementById('logo').addEventListener('click', function () {
+      window.location.href = '/redirect-to-home';
     });
 
-    const data = await response.json();
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        // URL에서 testid를 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        const testid = urlParams.get('testid'); // URL 쿼리에서 testid 값을 가져옴
 
-    document.getElementById('rule-test-button').addEventListener('click', () => {
-      const cveId = data.cve
-      const envi = data.envi
-      if (cveId !== 'N/A') {
-        window.location.href = `/ruletest?cve=${encodeURIComponent(cveId)}&envi=${encodeURIComponent(envi)}`;
-      } else {
-        alert('CVE ID를 로드할 수 없습니다.');
+        if (!testid) {
+          console.error('testid가 URL에 없습니다.');
+          return;
+        }
+
+        // 서버에서 데이터를 fetch
+        const response = await fetch('/rule/test/show', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ testid: testid }) // 필요한 testid를 여기에 넣음
+        });
+
+        const data = await response.json();
+
+        document.getElementById('rule-test-button').addEventListener('click', () => {
+          const cveId = data.cve
+          const envi = data.envi
+          if (cveId !== 'N/A') {
+            window.location.href = `/ruletest?cve=${encodeURIComponent(cveId)}&envi=${encodeURIComponent(envi)}`;
+          } else {
+            alert('CVE ID를 로드할 수 없습니다.');
+          }
+        });
+
+        // 데이터를 HTML에 렌더링
+        document.getElementById('cve-id').textContent = data.cve || 'N/A';
+        document.getElementById('publish-date').textContent = `게시일: ${data.created_at || 'N/A'}`;
+        document.getElementById('vuln-type').textContent = `취약점 유형: ${data.vuln_type || 'N/A'}`;
+        document.getElementById('description').textContent = data.description || 'N/A';
+        document.getElementById('test-rule').textContent = data.rule || 'N/A';
+        document.getElementById('test-environment').textContent = data.setting || 'N/A';
+        document.getElementById('total-packets').textContent = data.total || 'N/A';
+        document.getElementById('attack-packets').textContent = data.attacknum || 'N/A';
+        document.getElementById('normal-packets').textContent = data.normalnum || 'N/A';
+        document.getElementById('accuracy-rate').textContent = data.accuracyrate || 'N/A';
+        document.getElementById('false-positive').textContent = data.attackrate || 'N/A';
+        document.getElementById('false-negative').textContent = data.normalrate || 'N/A';
+        document.getElementById('true-positive').textContent = data.attacktrue || 'N/A';
+        document.getElementById('true-negative').textContent = data.normaltrue || 'N/A';
+        document.getElementById('latency').textContent = data.attacklatency || 'N/A';
+        document.getElementById('cpu-usage').textContent = data.cpu_usage || 'N/A';
+        document.getElementById('memory-usage').textContent = data.memory_usage || 'N/A';
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
     });
-
-    // 데이터를 HTML에 렌더링
-    document.getElementById('cve-id').textContent = data.cve || 'N/A';
-    document.getElementById('publish-date').textContent = `게시일: ${data.created_at || 'N/A'}`;
-    document.getElementById('vuln-type').textContent = `취약점 유형: ${data.vuln_type || 'N/A'}`;
-    document.getElementById('description').textContent = data.description || 'N/A';
-    document.getElementById('test-rule').textContent = data.rule || 'N/A';
-    document.getElementById('test-environment').textContent = data.setting || 'N/A';
-    document.getElementById('total-packets').textContent = data.total || 'N/A';
-    document.getElementById('attack-packets').textContent = data.attacknum || 'N/A';
-    document.getElementById('normal-packets').textContent = data.normalnum || 'N/A';
-    document.getElementById('accuracy-rate').textContent = data.accuracyrate || 'N/A';
-    document.getElementById('false-positive').textContent = data.attackrate || 'N/A';
-    document.getElementById('false-negative').textContent = data.normalrate || 'N/A';
-    document.getElementById('true-positive').textContent = data.attacktrue || 'N/A';
-    document.getElementById('true-negative').textContent = data.normaltrue || 'N/A';
-    document.getElementById('latency').textContent = data.attacklatency || 'N/A';
-    document.getElementById('cpu-usage').textContent = data.cpu_usage || 'N/A';
-    document.getElementById('memory-usage').textContent = data.memory_usage || 'N/A';
-
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-});
   </script>
 </body>
 
 </html>
-
