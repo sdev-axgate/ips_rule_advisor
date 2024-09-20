@@ -10,8 +10,8 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../static/assets/img/favicon.png" rel="icon">
+    <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -20,16 +20,16 @@
         rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-    <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+    <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../static/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="../static/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="../static/assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="../static/assets/css/style.css" rel="stylesheet">
 
     <!-- =======================================================
   * Template Name: NiceAdmin
@@ -45,8 +45,8 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo d-flex align-items-center">
-                <img src="assets/img/logo.png" alt="">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="../static/assets/img/logo.png" alt="">
                 <span class="d-none d-lg-block">S-aide</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -58,7 +58,7 @@
                 <li class="nav-item dropdown pe-3">
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <img src="../static/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
                         <span class="d-none d-md-block ps-2">K. Anderson</span>
                     </a><!-- End Profile Iamge Icon -->
                 </li><!-- End Profile Nav -->
@@ -74,7 +74,7 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link " href="getinfo.html">
+                <a class="nav-link" href="/">
                     <i class="bi bi-search"></i>
                     <span>정보 수집</span>
                 </a>
@@ -87,12 +87,12 @@
                 </a>
                 <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="components-alerts.html">
+                        <a href="#">
                             <i class="bi bi-circle"></i><span>CVE-2024-5045</span>
                         </a>
                     </li>
                     <li>
-                        <a href="info.html">
+                        <a href="#">
                             <i class="bi bi-circle"></i><span>log4j</span>
                         </a>
                     </li>
@@ -101,7 +101,7 @@
 
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="ruletest.html">
+                <a class="nav-link collapsed" href="/ruletest">
                     <i class="ri ri-test-tube-line"></i>
                     <span>룰 테스트</span>
                 </a>
@@ -110,21 +110,21 @@
             <li class="nav-heading">분할</li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="settings.html">
+                <a class="nav-link collapsed" href="/settings">
                     <i class="bi bi-gear"></i>
                     <span>설정</span>
                 </a>
             </li><!-- End 설정 page Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="auth_register.html">
+                <a class="nav-link collapsed" href="/register">
                     <i class="bi bi-card-list"></i>
                     <span>회원가입</span>
                 </a>
             </li><!-- End 회원가입 Page Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="login.html">
+                <a class="nav-link collapsed" href="/login">
                     <i class="bi bi-box-arrow-in-right"></i>
                     <span>로그인</span>
                 </a>
@@ -148,6 +148,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">룰 테스트 결과</h5>
+                            <p id="publish-date">테스트일: {{ test_result.created_at }}</p>
                             <!-- Bordered Table -->
                             <h5>테스트 환경</h5>
                             <table class="table table-bordered">
@@ -161,10 +162,10 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">Snort 2.9x</th>
-                                        <td>100</td>
-                                        <td>10</td>
-                                        <td>80</td>
+                                        <th scope="row" id="test-environment">{{ test_result.setting }}</th>
+                                        <td id="total-packets">{{ test_result.total }}</td>
+                                        <td id="attack-packets">{{ test_result.attacknum }}</td>
+                                        <td id="normal-packets">{{ test_result.normalnum }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -182,11 +183,11 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">8n%</th>
-                                        <td>10</td>
-                                        <td>10</td>
-                                        <td>40</td>
-                                        <td>40</td>
+                                        <th scope="row" id="accuracy-rate">{{ test_result.accuracyrate }}</th>
+                                        <td id="false-positive">{{ test_result.attackrate }}</td>
+                                        <td id="false-negative">{{ test_result.normalrate }}</td>
+                                        <td id="true-positive">{{ test_result.attacktrue }}</td>
+                                        <td id="true-negative">{{ test_result.normaltrue }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -199,8 +200,8 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th>12</th>
-                                        <td>13</td>
+                                        <td  id="normalpacket_num">{{ test_result.normalpacket_num }}</td>
+                                        <td  id="attackpacket_num">{{ test_result.attackpacket_num }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -213,8 +214,8 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th><a>정상 패킷 다운로드</a></th>
-                                        <td><a>공격 패킷 다운로드</a></td>
+                                        <td id="normal_packet"></td>
+                                        <td id="attack_packet"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -231,16 +232,16 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th scope="row">정상 패킷</th>
-                                        <td>5ms</td>
-                                        <td>10%</td>
-                                        <td>5mb</td>
+                                        <th scope="row" id="category">정상 패킷</th>
+                                        <td id="normallatency">{{ test_result.normallatency }}</td>
+                                        <td id="cpu-usage">{{ test_result.normalcpu_usage }}</td>
+                                        <td d="memory-usage">{{ test_result.normalmemory_usage }}</td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">공격 패킷</th>
-                                        <td>5ms</td>
-                                        <td>10%</td>
-                                        <td>5mb</td>
+                                        <th scope="row" id="category">공격 패킷</th>
+                                        <td id="attacklatency">{{ test_result.attacklatency }}</td>
+                                        <td id="cpu-usage">{{ test_result.attackcpu_usage }}%</td>
+                                        <td id="memory-usage">{{ test_result.attackmemory_usage }}</td>
                                     </tr>
                             </table>
                             <!-- End Bordered Table -->
@@ -271,17 +272,47 @@
             class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
-    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/chart.js/chart.umd.js"></script>
-    <script src="assets/vendor/echarts/echarts.min.js"></script>
-    <script src="assets/vendor/quill/quill.js"></script>
-    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-    <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="../static/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="../static/assets/vendor/echarts/echarts.min.js"></script>
+    <script src="../static/assets/vendor/quill/quill.js"></script>
+    <script src="../static/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="../static/assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="../static/assets/vendor/php-email-form/validate.js"></script>
 
     <!-- Template Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="../static/assets/js/main.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          document.getElementById('rule-test-button').addEventListener('click', () => {
+            const cveId = "{{ test_result.cve }}";
+            const envi = "{{ test_result.envi }}";
+            const rule = "{{ test_result.rule }}";
+            if (cveId !== 'N/A') {
+              window.location.href = `/ruletest?cve=${encodeURIComponent(cveId)}&envi=${encodeURIComponent(envi)}&rule=${encodeURIComponent(rule)}`;
+            } else {
+              alert('CVE ID를 로드할 수 없습니다.');
+            }
+          });
+    
+          {const ncontainer = document.getElementById("normal_packet");
+          const downloadLink = document.createElement('a');
+          const normal = "{{test_result.normalpacket}}";
+          downloadLink.href = `/rule/download?file_location=${normal}`;
+          downloadLink.innerText = "정상 패킷 다운로드";
+          ncontainer.appendChild(downloadLink);}
+    
+          {const acontainer = document.getElementById("attack_packet");
+          const downloadLink = document.createElement('a');
+          const attack = "{{test_result.attackpacket}}";
+          downloadLink.href = `/rule/download?file_location=${attack}`;
+          downloadLink.innerText = "공격 패킷 다운로드";
+          acontainer.appendChild(downloadLink);
+          }
+        });
+      </script>
 
 </body>
 
