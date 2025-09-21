@@ -1,5 +1,5 @@
-# 유의사항
-localhost:8080/docs를 하시면 swagger에서 편하게 보실 수 있습니다.
+## LLM 기반 CVE 정보수집 자동화 및 탐지분석 플랫폼
+사용툴 : open ai API, fastAPI, SUPABASE, suricata, snort2,3 
 
 # 주의사항
 만약 clone 하셨을때 venv파일이 있으시면 삭제하시기 바랍니다.
@@ -27,4 +27,5 @@ localhost:8080/docs를 하시면 swagger에서 편하게 보실 수 있습니다
 
 서버 실행
 `uvicorn src.main:app --reload`
+
 
